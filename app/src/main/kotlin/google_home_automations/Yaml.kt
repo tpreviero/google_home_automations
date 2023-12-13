@@ -63,8 +63,19 @@ fun OutputStreamWriter.printAction(rollerShutter: RollerShutter, action: Action)
       on: ${if (action == Action.Stop) "false" else "true"}
       devices: ${rollerShutter.device} ${
             if (action == Action.Raise) Action.Raise.toString().lowercase() else Action.Lower.toString().lowercase()
-        } - ${rollerShutter.room}"""
-    )
+        } - ${rollerShutter.room}""")
+
+    if (action != Action.Stop) {
+        append(
+            """
+    - type: time.delay
+      for: ${rollerShutter.transitionDuration.inWholeSeconds}sec
+    - type: device.command.OnOff
+      on: false
+      devices: ${rollerShutter.device} ${
+                if (action == Action.Raise) Action.Raise.toString().lowercase() else Action.Lower.toString().lowercase()
+            } - ${rollerShutter.room}""")
+    }
 }
 
 fun OutputStreamWriter.printPreamble(name: String, description: String) {

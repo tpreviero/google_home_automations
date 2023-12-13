@@ -1,6 +1,9 @@
 package google_home_automations
 
-data class RollerShutter(val room: String, val device: String)
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+
+data class RollerShutter(val room: String, val device: String, val transitionDuration: Duration = 60.seconds)
 
 val rollerShutters = listOf(
     RollerShutter("cucina", "tapparella grande"),
