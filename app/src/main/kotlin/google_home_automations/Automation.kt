@@ -23,4 +23,4 @@ fun List<RollerShutter>.automation(action: Action, additionalStarters: () -> Set
     )
 }
 
-private fun List<RollerShutter>.rooms(): String = joinToString(", ") { it.room }
+private fun List<RollerShutter>.rooms(): String = map { it.room }.toSet().joinToString(", ")
