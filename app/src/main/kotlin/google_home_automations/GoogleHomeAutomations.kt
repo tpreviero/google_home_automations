@@ -49,7 +49,7 @@ private fun automationPerHouse(
                 action.toString().lowercase()
             } roller shutters for google_home_automations.rooms ${rollerShutters.rooms()}"
         )
-        printStarters(rollerShutters) { invocationsAll[action]!! }
+        printStarters(rollerShutters) { rollerShutters.starters(action).map { it.invocation } }
         apply { if (action == Stop) printScheduledStarter() }
         printActions(rollerShutters, action)
         close()
@@ -68,7 +68,7 @@ private fun automationPerRoom(
                 "$action $room roller shutters",
                 "Automation to ${action.toString().lowercase()} roller shutter for room $room"
             )
-            printStarters(rs) { invocationsMultiple[action]!!.map { i -> i + it.first().room } }
+            printStarters(rs) { rs.starters(action).map { it.invocation } }
             printActions(rs, action)
             close()
         }
@@ -86,7 +86,7 @@ private fun automationPerDevice(
                 "$action ${it.device} ${it.room} roller shutters",
                 "Automation to ${action.toString().lowercase()} ${it.device} roller shutter for room ${it.room}"
             )
-            printStarters(listOf(it)) { invocations[action]!!.map { i -> (i + it.first().room).format(it.first().device) } }
+            printStarters(listOf(it)) { _ -> it.starters(action).map { it.invocation } }
             printActions(listOf(it), action)
             close()
         }
