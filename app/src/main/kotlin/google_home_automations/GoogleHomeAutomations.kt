@@ -2,7 +2,7 @@ package google_home_automations
 
 import google_home_automations.Action.Stop
 import google_home_automations.Starters.Scheduled.Hours._22
-import google_home_automations.Starters.Scheduled.Minutes._00
+import google_home_automations.Starters.Scheduled.Minutes._30
 import google_home_automations.Starters.Scheduled.Weekdays
 import java.io.File
 
@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
         Action.entries.flatMap { action -> rollerShutters.map { "${action.emojify()} ${it.device} ${it.room}" to it.automation(action) } } +
         Action.entries.flatMap { action -> rollerShutters.groupBy(RollerShutter::room).map { (room, rs) -> "${action.emojify()} $room" to rs.automation(action) } } +
         Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) {
-            listOf(Starters.Scheduled(_22, _00, Weekdays.entries.toSet())).filter { action == Stop }.toSet()
+            listOf(Starters.Scheduled(_22, _30, Weekdays.entries.toSet())).filter { action == Stop }.toSet()
         }}
 
     automations.forEach {
