@@ -1,90 +1,37 @@
 package google_home_automations
 
-import java.io.OutputStreamWriter
-
-fun OutputStreamWriter.printStarters(
-    it: List<RollerShutter>, starters: (List<RollerShutter>) -> List<String>
-) {
-    append("  starters:")
-    starters(it).forEach(::printStarter)
-}
-
-fun OutputStreamWriter.printStarter(invocation: String) {
-    append(
-        """
+fun Starters.yaml(): String = when (this) {
+    is Starters.OkGoogle -> """
     - type: assistant.event.OkGoogle
       eventData: query
       is: "$invocation""""
-    )
-}
 
-fun OutputStreamWriter.printScheduledStarter() {
-    append(
+    is Starters.Scheduled -> """
+    - type: time.schedule
+      at: ${hour.ordinal}:${minute.ordinal}
+      weekdays:""" + weekdays.map { toString().substring(0..2).uppercase() }.map {
         """
-    - type: time.schedule
-      at: 22:00
-      weekdays:
-        - MON
-        - TUE
-        - WED
-        - THU
-        - FRI
-        - SAT
-        - SUN
-    - type: time.schedule
-      at: 10:00
-      weekdays:
-        - MON
-        - TUE
-        - WED
-        - THU
-        - FRI
-        - SAT
-        - SUN"""
-    )
-}
-
-fun OutputStreamWriter.printActions(rollerShutter: List<RollerShutter>, action: Action) {
-    append("\n  actions:")
-    rollerShutter.forEach {
-        printAction(it, action)
+        - $it"""
     }
 }
 
-fun OutputStreamWriter.printAction(rollerShutter: RollerShutter, action: Action) {
-    append(
-        """
-    - type: device.command.OnOff
-      on: false
-      devices: ${rollerShutter.device} ${
-            if (action == Action.Raise) Action.Lower.toString().lowercase() else Action.Raise.toString().lowercase()
-        } - ${rollerShutter.room}
-    - type: device.command.OnOff
-      on: ${if (action == Action.Stop) "false" else "true"}
-      devices: ${rollerShutter.device} ${
-            if (action == Action.Raise) Action.Raise.toString().lowercase() else Action.Lower.toString().lowercase()
-        } - ${rollerShutter.room}""")
-
-    if (action != Action.Stop) {
-        append(
-            """
+fun Actions.yaml(): String = when (this) {
+    is Actions.Delay -> """
     - type: time.delay
-      for: ${rollerShutter.transitionDuration.inWholeSeconds}sec
+      for: ${duration.inWholeSeconds}sec"""
+
+    is Actions.OnOff -> """
     - type: device.command.OnOff
-      on: false
-      devices: ${rollerShutter.device} ${
-                if (action == Action.Raise) Action.Raise.toString().lowercase() else Action.Lower.toString().lowercase()
-            } - ${rollerShutter.room}""")
-    }
+      on: $on
+      devices:
+        """ + devices.joinToString("\n        - ", "- ")
 }
 
-fun OutputStreamWriter.printPreamble(name: String, description: String) {
-    appendLine(
-        """
-metadata:
+fun Automation.yaml(): String {
+    return """metadata:
   name: $name
   description: $description
 automations:
-""".trimIndent()
-    )
+  starters:""" + starters.joinToString("") { it.yaml() } + """
+  actions:""" + actions.joinToString("") { it.yaml() }
 }

@@ -7,9 +7,9 @@ import java.net.http.HttpResponse
 
 private val client: HttpClient = HttpClient.newBuilder().build()
 
-fun insertAutomation(automation: String): String {
+fun insertAutomation(automation: Automation): String {
     val insertBody =
-        "[\"$HOUSE_ID\",[\"\",null,null,null,\"\",null,null,[],2,null,null,null,null,null,[\"${automation}\"]],[[\"script_details.content\"]]]"
+        "[\"$HOUSE_ID\",[\"\",null,null,null,\"\",null,null,[],2,null,null,null,null,null,[\"${automation.http()}\"]],[[\"script_details.content\"]]]"
     val requestBuilder = getRequestBuilder("UpsertAutomation")
     val insertRequest = requestBuilder.POST(HttpRequest.BodyPublishers.ofString(insertBody)).build()
     val insertResponse: HttpResponse<String> = client.send(insertRequest, HttpResponse.BodyHandlers.ofString())
@@ -42,4 +42,40 @@ fun deleteAutomation(automationId: String) {
         getRequestBuilder("DeleteAutomation").POST(HttpRequest.BodyPublishers.ofString(deleteBody)).build()
     val enableResponse = client.send(deleteRequest, HttpResponse.BodyHandlers.ofString())
     println("Delete automation: ${enableResponse.statusCode()}")
+}
+
+private fun Starters.http(): String = when (this) {
+    is Starters.OkGoogle -> """
+    - type: assistant.event.OkGoogle
+      eventData: query
+      is: \"$invocation\""""
+
+    is Starters.Scheduled -> """
+    - type: time.schedule
+      at: ${hour.ordinal}:${minute.ordinal}
+      weekdays:""" + weekdays.map { toString().substring(0..2).uppercase() }.map {
+        """
+        - $it"""
+    }
+}
+
+private fun Actions.http(): String = when (this) {
+    is Actions.Delay -> """
+    - type: time.delay
+      for: ${duration.inWholeSeconds}sec"""
+
+    is Actions.OnOff -> """
+    - type: device.command.OnOff
+      on: $on
+      devices:
+        """ + devices.joinToString("\n        - ", "- ")
+}
+
+private fun Automation.http(): String {
+    return """metadata:
+  name: $name
+  description: $description
+automations:
+  starters:""" + starters.joinToString("") { it.http() } + """
+  actions:""" + actions.joinToString("") { it.http() }
 }
