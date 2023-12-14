@@ -53,7 +53,7 @@ private fun Starters.http(): String = when (this) {
     is Starters.Scheduled -> """
     - type: time.schedule
       at: ${hour.ordinal}:${minute.ordinal}
-      weekdays:""" + weekdays.map { toString().substring(0..2).uppercase() }.map {
+      weekdays:""" + weekdays.map { it.toString().substring(0..2).uppercase() }.joinToString("") {
         """
         - $it"""
     }
