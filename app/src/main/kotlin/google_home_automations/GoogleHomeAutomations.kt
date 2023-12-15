@@ -39,5 +39,3 @@ fun save(automation: Automation, idFile: String) {
     enableAutomation(automationId)
     File(idFile).appendText("$automationId\n")
 }
-
-private fun List<RollerShutter>.rooms(): String = joinToString(", ") { it.room }
