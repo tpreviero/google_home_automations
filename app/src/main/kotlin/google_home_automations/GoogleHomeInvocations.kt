@@ -1,6 +1,6 @@
 package google_home_automations
 
-private val singleInvocations = listOf(
+private val singleInvocations = setOf(
     "la %s della ",
     "la %s in ",
     "la %s dell'",
@@ -14,7 +14,7 @@ private val singleInvocations = listOf(
     "%s ",
 )
 
-private val multipleInvocations = listOf(
+private val multipleInvocations = setOf(
     "le tapparelle della ",
     "le tapparelle in ",
     "le tapparelle dell'",
@@ -28,7 +28,7 @@ private val multipleInvocations = listOf(
     "tapparelle ",
 )
 
-private val allInvocations = listOf(
+private val allInvocations = setOf(
     "tapparelle",
     "tapparelle casa",
     "tapparelle della casa",
@@ -47,13 +47,13 @@ private val invocationsPrefixes = mapOf(
 )
 
 val invocations = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> singleInvocations.map { "$prefix $it" } })
+    Pair(entry.key, entry.value.flatMap { prefix -> singleInvocations.map { "$prefix $it" } }.toSet())
 }.toMap()
 
 val invocationsMultiple = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> multipleInvocations.map { "$prefix $it" } })
+    Pair(entry.key, entry.value.flatMap { prefix -> multipleInvocations.map { "$prefix $it" } }.toSet())
 }.toMap()
 
 val invocationsAll = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> allInvocations.map { "$prefix $it" } })
+    Pair(entry.key, entry.value.flatMap { prefix -> allInvocations.map { "$prefix $it" } }.toSet())
 }.toMap()

@@ -10,7 +10,7 @@ data class Automation(
 fun RollerShutter.automation(action: Action) = Automation(
     "$action $device $room roller shutter",
     "Automation to ${action.toString().lowercase()} $device roller shutter for room $room",
-    starters(action).toSet(),
+    starters(action),
     actions(action)
 )
 
@@ -18,7 +18,7 @@ fun List<RollerShutter>.automation(action: Action, additionalStarters: () -> Set
     return Automation(
         "$action ${rooms()} roller shutters",
         "Automation to ${action.toString().lowercase()} roller shutters for rooms ${rooms()}",
-        starters(action).toSet() + additionalStarters(),
+        starters(action) + additionalStarters(),
         actions(action)
     )
 }

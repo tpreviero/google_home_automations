@@ -19,13 +19,13 @@ sealed interface Starters {
     }
 }
 
-fun RollerShutter.starters(action: Action): List<Starters> =
-    invocations[action]!!.map { i -> (i + this.room).format(this.device) }.map(::OkGoogle)
+fun RollerShutter.starters(action: Action): Set<Starters> =
+    invocations[action]!!.map { i -> (i + this.room).format(this.device) }.map(::OkGoogle).toSet()
 
-fun List<RollerShutter>.starters(action: Action): List<Starters> {
+fun List<RollerShutter>.starters(action: Action): Set<Starters> {
     return if (map { it.room }.all { it == first().room }) {
-        invocationsMultiple[action]!!.map { i -> i + this.first().room }.map(::OkGoogle)
+        invocationsMultiple[action]!!.map { i -> i + this.first().room }.map(::OkGoogle).toSet()
     } else {
-        invocationsAll[action]!!.map(::OkGoogle)
+        invocationsAll[action]!!.map(::OkGoogle).toSet()
     }
 }
