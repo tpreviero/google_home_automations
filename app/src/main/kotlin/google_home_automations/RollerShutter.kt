@@ -7,6 +7,7 @@ data class RollerShutter(val room: String, val device: String, val transitionDur
 
 val rollerShutters = listOf(
     RollerShutter("cucina", "tapparella grande"),
+    RollerShutter("cucina", "tapparella piccola"),
     RollerShutter("ufficio", "tapparella"),
     RollerShutter("cameretta", "tapparella"),
     RollerShutter("camera", "tapparella grande"),
