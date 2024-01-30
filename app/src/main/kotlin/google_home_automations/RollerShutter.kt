@@ -12,6 +12,8 @@ val rollerShutters = listOf(
     RollerShutter("cameretta", "tapparella"),
     RollerShutter("camera", "tapparella grande"),
     RollerShutter("camera", "tapparella piccola"),
+    RollerShutter("bagno vecchio", "tapparella"),
+    RollerShutter("bagno nuovo", "tapparella"),
 )
 
 enum class Action {
