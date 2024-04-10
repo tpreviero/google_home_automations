@@ -24,7 +24,8 @@ fun main(args: Array<String>) {
         Action.entries.flatMap { action -> rollerShutters.groupBy(RollerShutter::room).map { (room, rs) -> "${action.emojify()} $room" to rs.automation(action) } } +
         Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) {
             listOf(Starters.Scheduled(_22, _30, Weekdays.entries.toSet())).filter { action == Stop }.toSet()
-        }}
+        }} +
+        Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action) } }
 
     automations.forEach {
         File("${args[0]}/${it.first}.yml").writeBytes(it.second.yaml().toByteArray())
@@ -32,6 +33,12 @@ fun main(args: Array<String>) {
             save(it.second, "${args[0]}/automations-ids")
         }
     }
+}
+
+private fun List<RollerShutter>.groups(): Map<String, List<RollerShutter>> {
+    return flatMap { rs -> rs.groups.map { Pair(it, rs) } }
+        .groupBy { it.first }
+        .mapValues { it.value.map { it.second } }
 }
 
 fun save(automation: Automation, idFile: String) {

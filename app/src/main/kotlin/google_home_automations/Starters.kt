@@ -26,6 +26,13 @@ fun List<RollerShutter>.starters(action: Action): Set<Starters> {
     return if (map { it.room }.all { it == first().room }) {
         invocationsMultiple[action]!!.map { i -> i + this.first().room }.map(::OkGoogle).toSet()
     } else {
-        invocationsAll[action]!!.map(::OkGoogle).toSet()
+        val sharedGroups: Set<String> = flatMap { it.groups }.toSet()
+        if (sharedGroups.isEmpty()) {
+            invocationsAll[action]!!.map(::OkGoogle).toSet()
+        } else {
+            sharedGroups.flatMap { group ->
+                invocationsMultiple[action]!!.map { i -> i + group }.map(::OkGoogle).toSet()
+            }.toSet()
+        }
     }
 }
