@@ -23,4 +23,13 @@ fun List<RollerShutter>.automation(action: Action, additionalStarters: () -> Set
     )
 }
 
+fun List<RollerShutter>.automation(action: Action, group: String, additionalStarters: () -> Set<Starters> = { emptySet() }): Automation {
+    return Automation(
+        "$action $group roller shutters",
+        "Automation to ${action.toString().lowercase()} roller shutters for group $group",
+        starters(action, group) + additionalStarters(),
+        actions(action)
+    )
+}
+
 private fun List<RollerShutter>.rooms(): String = map { it.room }.toSet().joinToString(", ")

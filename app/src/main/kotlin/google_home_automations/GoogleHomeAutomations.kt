@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
         Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) {
             listOf(Starters.Scheduled(_22, _30, Weekdays.entries.toSet())).filter { action == Stop }.toSet()
         }} +
-        Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action) } }
+        Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action, it.key) } }
 
     automations.forEach {
         File("${args[0]}/${it.first}.yml").writeBytes(it.second.yaml().toByteArray())
