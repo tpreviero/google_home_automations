@@ -1,0 +1,13 @@
+"cucina":
+  name: "tapparella grande"
+  groups:
+    - zona giorno
+   
+"cucina", "tapparella piccola", setOf("zona giorno")),
+"ufficio", "tapparella", setOf("zona giorno")),
+"cameretta", "tapparella", setOf("zona notte", "camere")),
+"camera", "tapparella grande", setOf("zona notte", "camere")),
+"camera", "tapparella piccola", setOf("zona notte", "camere")),
+"bagno vecchio", "tapparella", setOf("zona giorno", "bagni")),
+"bagno nuovo", "tapparella", setOf("zona giorno", "bagni"))
+]
