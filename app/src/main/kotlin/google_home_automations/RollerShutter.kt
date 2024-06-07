@@ -11,14 +11,14 @@ data class RollerShutter(
 )
 
 val rollerShutters = listOf(
-    RollerShutter("cucina", "tapparella grande", setOf("zona giorno", "mattina")),
-    RollerShutter("cucina", "tapparella piccola", setOf("zona giorno", "mattina")),
-    RollerShutter("ufficio", "tapparella", setOf("zona giorno", "mattina")),
-    RollerShutter("cameretta", "tapparella", setOf("zona notte", "camere", "sera")),
-    RollerShutter("camera", "tapparella grande", setOf("zona notte", "camere", "sera")),
-    RollerShutter("camera", "tapparella piccola", setOf("zona notte", "camere", "sera")),
-    RollerShutter("bagno vecchio", "tapparella", setOf("zona giorno", "bagni", "mattina", "sera")),
-    RollerShutter("bagno nuovo", "tapparella", setOf("zona giorno", "bagni", "mattina")),
+    RollerShutter("cucina", "tapparella grande", setOf("zona giorno", "mattina", "est")),
+    RollerShutter("cucina", "tapparella piccola", setOf("zona giorno", "mattina", "est")),
+    RollerShutter("ufficio", "tapparella", setOf("zona giorno", "mattina", "ovest")),
+    RollerShutter("cameretta", "tapparella", setOf("zona notte", "camere", "sera", "est")),
+    RollerShutter("camera", "tapparella grande", setOf("zona notte", "camere", "sera", "est")),
+    RollerShutter("camera", "tapparella piccola", setOf("zona notte", "camere", "sera", "est")),
+    RollerShutter("bagno vecchio", "tapparella", setOf("zona giorno", "bagni", "mattina", "sera", "ovest")),
+    RollerShutter("bagno nuovo", "tapparella", setOf("zona giorno", "bagni", "mattina", "ovest")),
 )
 
 enum class Action {
