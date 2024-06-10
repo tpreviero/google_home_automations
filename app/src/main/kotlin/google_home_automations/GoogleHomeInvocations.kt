@@ -51,19 +51,19 @@ private val allInvocations = setOf(
 )
 
 private val invocationsPrefixes = mapOf(
-    Pair(Action.Raise, listOf("alza", "tira su")),
-    Pair(Action.Lower, listOf("abbassa", "tira giù")),
-    Pair(Action.Stop, listOf("ferma", "stoppa")),
+    Pair(Action.Raise, setOf("alza", "tira su")),
+    Pair(Action.Lower, setOf("abbassa", "tira giù")),
+    Pair(Action.Stop, setOf("ferma", "stoppa")),
 )
 
-val invocations = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> singleInvocations.map { "$prefix $it" } }.toSet())
-}.toMap()
+val invocations = invocationsPrefixes + singleInvocations
 
-val invocationsMultiple = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> multipleInvocations.map { "$prefix $it" } }.toSet())
-}.toMap()
+val invocationsMultiple = invocationsPrefixes + multipleInvocations
 
-val invocationsAll = invocationsPrefixes.map { entry ->
-    Pair(entry.key, entry.value.flatMap { prefix -> allInvocations.map { "$prefix $it" } }.toSet())
-}.toMap()
+val invocationsAll = invocationsPrefixes + allInvocations
+
+operator fun Map<Action, Set<String>>.plus(some: Set<String>): Map<Action, Set<String>> {
+    return mapValues {
+        it.value.flatMap { prefix -> some.map { "$prefix $it" } }.toSet()
+    }
+}
