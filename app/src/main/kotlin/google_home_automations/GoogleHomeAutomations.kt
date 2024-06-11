@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
         }} +
         Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action, it.key) } }
 
-    automations.parallelStream().forEach {
+    automations.forEach {
         File("${args[0]}/${it.first}.yml").writeBytes(it.second.yaml().toByteArray())
         if (!DRY_RUN) {
             save(it.second, "${args[0]}/automations-ids")
