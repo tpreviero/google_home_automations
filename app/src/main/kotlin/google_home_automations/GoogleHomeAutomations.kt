@@ -2,10 +2,6 @@ package google_home_automations
 
 import java.io.File
 
-val DRY_RUN = System.getenv("DRY_RUN").toBoolean()
-val HOUSE_ID: String get() = System.getenv("HOUSE_ID")
-val GOOGLE_AUTH_TOKEN: String get() = System.getenv("GOOGLE_AUTH_TOKEN")
-
 val automations: List<Pair<String, Automation>> =
     single +
     roomsAutomations +
