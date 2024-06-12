@@ -10,23 +10,40 @@ val automations: List<Pair<String, Automation>> =
 
 fun main(args: Array<String>) {
 
-    with(File("${args[0]}/automations-ids")) {
+    val folder = args[0]
+    val automationsId = File("$folder/automations-ids")
+
+    deleteExistingAutomations(automationsId)
+
+    writeToFile(automations, folder)
+
+    createAutomations(automationsId, automations)
+}
+
+private fun createAutomations(automationsId: File, automations: List<Pair<String, Automation>>) {
+    if (!DRY_RUN) {
+        automations
+            .map { insertAutomation(it.second) }
+            .map { Pair(it, enableAutomation(it)) }
+            .map {
+                automationsId.appendText("${it.first}\n")
+                it
+            }
+            .forEach { (id, status) -> println("Automation $id enabled: $status") }
+    }
+}
+
+private fun writeToFile(automations: List<Pair<String, Automation>>, folder: String) {
+    automations.forEach {
+        File("$folder/${it.first}.yml").writeBytes(it.second.yaml().toByteArray())
+    }
+}
+
+private fun deleteExistingAutomations(automationIdsFile: File) {
+    with(automationIdsFile) {
         if (exists() && !DRY_RUN) {
             readLines().parallelStream().forEach { deleteAutomation(it) }
             delete()
         }
     }
-
-    automations.forEach {
-        File("${args[0]}/${it.first}.yml").writeBytes(it.second.yaml().toByteArray())
-        if (!DRY_RUN) {
-            save(it.second, "${args[0]}/automations-ids")
-        }
-    }
-}
-
-fun save(automation: Automation, idFile: String) {
-    val automationId = insertAutomation(automation)
-    enableAutomation(automationId)
-    File(idFile).appendText("$automationId\n")
 }

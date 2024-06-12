@@ -25,7 +25,7 @@ private fun getRequestBuilder(functionality: String): HttpRequest.Builder {
         .header("authorization", "Bearer $GOOGLE_AUTH_TOKEN")
 }
 
-fun enableAutomation(automationId: String) {
+fun enableAutomation(automationId: String): Result<Boolean> {
     println(automationId)
     val enableBody =
         "[\"$HOUSE_ID\",[\"$automationId\",null,null,null,null,null,null,[[1]],2],[[\"status.is_enabled\"]]]"
@@ -33,15 +33,18 @@ fun enableAutomation(automationId: String) {
         getRequestBuilder("UpsertAutomation").POST(HttpRequest.BodyPublishers.ofString(enableBody)).build()
     val enableResponse = client.send(enableRequest, HttpResponse.BodyHandlers.ofString())
     println("Enable automation: ${enableResponse.statusCode()}")
+    if (enableResponse.statusCode() != 200) {
+        return Result.failure(Exception("Failed to enable automation: error code ${enableResponse.statusCode()}"))
+    }
+    return Result.success(true)
 }
 
 fun deleteAutomation(automationId: String) {
-    println(automationId)
     val deleteBody = "[\"$HOUSE_ID\",\"$automationId\"]"
     val deleteRequest =
         getRequestBuilder("DeleteAutomation").POST(HttpRequest.BodyPublishers.ofString(deleteBody)).build()
     val enableResponse = client.send(deleteRequest, HttpResponse.BodyHandlers.ofString())
-    println("Delete automation: ${enableResponse.statusCode()}")
+    println("Delete automation $automationId: ${enableResponse.statusCode()}")
 }
 
 private fun Starters.http(): String = when (this) {
