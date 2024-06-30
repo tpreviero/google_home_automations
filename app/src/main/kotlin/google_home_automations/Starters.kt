@@ -19,16 +19,16 @@ sealed interface Starters {
     }
 }
 
-fun RollerShutter.starters(action: Action): Set<Starters> = (invocationsPrefixes + invocations)[action]!!.map { i -> i.format(device, room) }.map(::OkGoogle).toSet()
+fun RollerShutter.starters(action: Action): Set<Starters> = (actionPrefixes + " la ${this.device} ${room.article} ${room.name}")[action]!!.map(::OkGoogle).toSet()
 
 fun List<RollerShutter>.starters(action: Action): Set<Starters> {
     return if (map { it.room }.all { it == first().room }) {
-        (invocationsPrefixes + this.first().invocationsMultiple)[action]!!.map { it.format(this.first().room) }.map(::OkGoogle).toSet()
+        (actionPrefixes + "le tapparelle ${this.first().room.article} ${this.first().room.name}")[action]!!.map(::OkGoogle).toSet()
     } else {
-        (invocationsPrefixes + setOf("tutte le tapparelle della casa", "tutte le tapparelle"))[action]!!.map(::OkGoogle).toSet()
+        (actionPrefixes + setOf("tutte le tapparelle della casa", "tutte le tapparelle"))[action]!!.map(::OkGoogle).toSet()
     }
 }
 
 fun List<RollerShutter>.starters(action: Action, group: String): Set<Starters> {
-    return (invocationsPrefixes + setOf("le tapparelle del gruppo %s"))[action]!!.map { i -> i.format(group) }.map(::OkGoogle).toSet()
+    return (actionPrefixes + "le tapparelle del gruppo $group")[action]!!.map(::OkGoogle).toSet()
 }
