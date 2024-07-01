@@ -6,7 +6,8 @@ val automations: List<Pair<String, Automation>> =
     single +
     roomsAutomations +
     groups +
-    stopAll
+    stopAll +
+    customizedAutomations
 
 fun main(args: Array<String>) {
 
