@@ -9,11 +9,7 @@ data class Automation(
 
 val single = Action.entries.flatMap { action -> rollerShutters.map {"${action.emojify()} ${it.device} ${it.room}" to it.automation(action) } }
 val roomsAutomations = Action.entries.flatMap { action -> rollerShutters.groupBy(RollerShutter::room).map { (room, rs) -> "${action.emojify()} $room" to rs.automation(action) } }
-val stopAll = Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) {
-    listOf(Starters.Scheduled(
-        Starters.Scheduled.Hours._22,
-        Starters.Scheduled.Minutes._30, Starters.Scheduled.Weekdays.entries.toSet())).filter { action == Action.Stop }.toSet()
-}}
+val stopAll = Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) }
 val groups = Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action, it.key) } }
 
 fun RollerShutter.automation(action: Action) = Automation(
@@ -23,20 +19,20 @@ fun RollerShutter.automation(action: Action) = Automation(
     actions(action)
 )
 
-fun List<RollerShutter>.automation(action: Action, additionalStarters: () -> Set<Starters> = { emptySet() }): Automation {
+fun List<RollerShutter>.automation(action: Action): Automation {
     return Automation(
         "$action ${rooms()} roller shutters",
         "Automation to ${action.toString().lowercase()} roller shutters for rooms ${rooms()}",
-        starters(action) + additionalStarters(),
+        starters(action),
         actions(action)
     )
 }
 
-fun List<RollerShutter>.automation(action: Action, group: String, additionalStarters: () -> Set<Starters> = { emptySet() }): Automation {
+fun List<RollerShutter>.automation(action: Action, group: String): Automation {
     return Automation(
         "$action $group roller shutters",
         "Automation to ${action.toString().lowercase()} roller shutters for group $group",
-        starters(action, group) + additionalStarters(),
+        starters(action, group),
         actions(action)
     )
 }
