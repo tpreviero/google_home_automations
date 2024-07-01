@@ -1,0 +1,38 @@
+
+camere:
+  - name: "cucina"
+    articolo: "della"
+    groups:
+      - "mattina"
+    tapparelle:
+      - name: "tapparella grande"
+        transition: 37
+      - name: "tapparella piccola"
+        transition: 25
+  - name: "camera"
+    articolo: "della"
+    tapparelle:
+      - name: "tapparella grande"
+        transition: 20
+      - name: "tapparella piccola"
+        transition: 13
+  - name: "cameretta"
+    articolo: "della"
+    tapparelle:
+      - name: "tapparella"
+        transition: 15
+  - name: "bagno nuovo"
+    articolo: "del"
+    tapparelle:
+      - name: "tapparella"
+        transition: 15
+  - name: "bagno vecchio"
+    articolo: "del"
+    tapparelle:
+      - name: "tapparella"
+        transition: 15
+  - name: "ufficio"
+    articolo: "dell'"
+    tapparelle:
+      - name: "tapparella"
+        transition: 15
