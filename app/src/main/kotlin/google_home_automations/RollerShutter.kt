@@ -6,7 +6,10 @@ import kotlin.time.Duration.Companion.seconds
  data class Room(
     val name: String,
     val article: String = "della",
-)
+ ) {
+     @Override
+     override fun toString() = name
+ }
 
 val cucina = Room("cucina")
 val ufficio = Room("ufficio", "dell'")
