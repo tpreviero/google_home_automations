@@ -1,10 +1,10 @@
 package google_home_automations
 
 data class Automation(
-    val name: String,
-    val description: String,
-    val starters: Set<Starters>,
-    val actions: List<Actions>
+    var name: String,
+    var description: String,
+    var starters: Set<Starters>,
+    var actions: List<Actions>
 )
 
 val single = Action.entries.flatMap { action -> rollerShutters.map {"${action.emojify()} ${it.device} ${it.room}" to it.automation(action) } }
