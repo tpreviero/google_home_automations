@@ -13,8 +13,8 @@ val toNeutral = automation {
 val colazioneEstiva = automation {
     invocations("colazione estiva")
     actions(
+        Raise(tapparellaGrandeCucina.of(Percentage._40)) +
         Raise(
-            tapparellaGrandeCucina.of(Percentage._40),
             tapparellaPiccolaCucina,
             tapparellaUfficio,
             tapparellaBagnoNuovo,
@@ -41,7 +41,7 @@ operator fun Action.invoke(vararg rollerShutters: RollerShutter) =
     this(rollerShutters.toList())
 
 operator fun Action.invoke(rollerShutters: List<RollerShutter>) =
-    rollerShutters.flatMap { it.actions(this) }
+    rollerShutters.actions(this)
 
 fun Automation.actions(vararg actions: Actions) =
     Automation(this.name, this.description, this.starters, actions.toList())
