@@ -9,7 +9,7 @@ data class Automation(
 
 val single = Action.entries.flatMap { action -> rollerShutters.map {"${action.emojify()} ${it.device} ${it.room}" to it.automation(action) } }
 val roomsAutomations = Action.entries.flatMap { action -> rollerShutters.groupBy(RollerShutter::room).map { (room, rs) -> "${action.emojify()} $room" to rs.automation(action) } }
-val stopAll = Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) }
+val all = Action.entries.map { action -> "${action.emojify()} all" to rollerShutters.automation(action) }
 val groups = Action.entries.flatMap { action -> rollerShutters.groups().map { "${action.emojify()} ${it.key}" to it.value.automation(action, it.key) } }
 
 fun RollerShutter.automation(action: Action) = Automation(
