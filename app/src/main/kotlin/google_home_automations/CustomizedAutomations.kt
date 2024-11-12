@@ -13,32 +13,6 @@ val toNeutral = automation {
     actions += Action.Stop(rollerShutters)
 }
 
-val mattina = automation {
-    name = "Mattina"
-    description = "Alza le tapparelle per la mattina"
-    starters += Starters.Scheduled(Hours._7, Minutes._30, Weekdays.entries.toSet())
-    actions += Raise(
-        tapparellaGrandeCucina,
-        tapparellaPiccolaCucina,
-        tapparellaUfficio,
-        tapparellaBagnoNuovo,
-        tapparellaBagnoVecchio,
-    )
-}
-
-val sera = automation {
-    name = "Sera"
-    description = "Abbassa le tapparelle per la sera"
-    starters += Starters.Scheduled(Hours._20, Minutes._30, Weekdays.entries.toSet())
-    actions += Lower(
-        tapparellaGrandeCucina,
-        tapparellaPiccolaCucina,
-        tapparellaUfficio,
-        tapparellaBagnoNuovo,
-        tapparellaBagnoVecchio,
-    )
-}
-
 val colazioneEstiva = automation {
     name = "Colazione estiva"
     description = "Alza le tapparelle per una colazione estiva"
@@ -89,8 +63,6 @@ val customizedAutomations: List<Pair<String, Automation>> = listOf(
     "☕️☀️ colazione estiva" to colazioneEstiva,
     "🔽🤏 abbassa un po'" to abbassaUnPo,
     "🔼🤏 alza un po'" to alzaUnPo,
-    "🌅 mattina" to mattina,
-    "🌆 sera" to sera,
 ) + abbassaUnPoEach + alzaUnPoEach
 
 fun automation(init: Automation.() -> Unit): Automation = Automation("", "", emptySet(), emptyList()).apply { init() }

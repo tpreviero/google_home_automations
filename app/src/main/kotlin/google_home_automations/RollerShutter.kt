@@ -17,6 +17,7 @@ val cameretta = Room("cameretta")
 val camera = Room("camera")
 val bagnoVecchio = Room("bagno vecchio", "del")
 val bagnoNuovo = Room("bagno nuovo", "del")
+val lavanderia = Room("lavanderia")
 
 data class RollerShutter(
     val room: Room,
@@ -33,6 +34,7 @@ val tapparellaGrandeCamera = RollerShutter(camera, "tapparella grande", setOf("s
 val tapparellaPiccolaCamera = RollerShutter(camera, "tapparella piccola", setOf("sera", "est", "camere"), 13.seconds)
 val tapparellaBagnoVecchio = RollerShutter(bagnoVecchio, "tapparella", setOf("mattina", "sera", "ovest"), 15.seconds)
 val tapparellaBagnoNuovo = RollerShutter(bagnoNuovo, "tapparella", setOf("mattina", "ovest"), 25.seconds)
+val tapparellaLavanderia = RollerShutter(lavanderia, "tapparella", setOf("ovest"), 20.seconds)
 
 val rollerShutters = listOf(
     tapparellaGrandeCucina,
@@ -43,6 +45,7 @@ val rollerShutters = listOf(
     tapparellaPiccolaCamera,
     tapparellaBagnoVecchio,
     tapparellaBagnoNuovo,
+    tapparellaLavanderia,
 )
 
 enum class Action {
